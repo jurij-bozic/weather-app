@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rozha+One&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js" defer></script>
+    <script type="module" src="script-3d.js"> </script>
+
+</head>
+
+<body>
+    <div id='main-container'>
+        <div id="main-home-container" class='basic'>
+            <div id="home-text">
+                <h1 id="text1">Select a location to display</h2> 
+                <h2 id="text2">weather data!</h2>
+                
+                  <form id="search-form"><input type="text" id="search-input" placeholder="Select Location"><button id="magnifying-glass"></button></form>
+                
+            </div>
+        </div>
+        <div id='details-container' class='basic'>
+          <div id="selected-day">
+            <div >
+              <div>
+                <h1 class="spacer" id="location-container"> 
+                  <button id="back-btn"><div id="back-btn-content"></div></button>
+                  <span id="location" >Location Name</span> 
+                  </h1>
+                </div>
+            </div>
+            <h2 id="degrees" class="spacer">DEGREES</h2>
+            <div id="picture" class="spacer"><canvas id="canvas-3d"></canvas></div>
+            <div id="day-name" class="spacer">DAY NAME</div>
+          </div>
+          
+          <div id="day-selection" class="spacer">
+          </div>
+        </div>
+        <div id="circle" class="circle-home"></div>
+    </div>
+   
+</body>
+
+</html>
+
+
