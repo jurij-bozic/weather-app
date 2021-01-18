@@ -43,7 +43,7 @@ function getWeatherData(url1){
                 document.getElementById(prevTargetId).click();
 
                 //switches views
-                document.getElementById('main-home-container').style.display = 'none';
+                document.getElementById('loading-screen').style.display = 'none';
                 document.getElementById('details-container').classList.remove('details-container');
                 document.getElementById('details-container').style.visibility = 'visible'
                 document.getElementById('details-container').style.display = 'block';
@@ -170,7 +170,9 @@ form.addEventListener("submit", e => {
     e.preventDefault();
     let inputValue = input.value;
     let urlLocation = `https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&appid=${apiKey}&units=metric`;
-   
+
+    document.getElementById('main-home-container').style.display = 'none';
+    document.getElementById('loading-screen').style.display = 'block';
     getWeatherData(urlLocation);
 })
 
