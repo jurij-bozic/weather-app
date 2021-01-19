@@ -90,80 +90,63 @@ function selectDay(event){
     document.getElementById('degrees').textContent = event.srcElement.lastChild.textContent; 
     document.getElementById(event.srcElement.id).classList.add('get-selected');
 
-    setBackground(classesOfChild[classesOfChild.length-1]);
-    //loads gltf icons and rotates them
-    generateImg3D(classesOfChild[classesOfChild.length-1].toLowerCase());
+    // setBackground(classesOfChild[classesOfChild.length-1]);
+
+    //loads main image for selected day
+    generateMainImage(classesOfChild[classesOfChild.length-1].toLowerCase());
 
     prevTargetId = event.srcElement.id;
 }
-//start of 3D graphics loading
-function generateImg3D(file) {
-    let canvas = document.querySelector('#canvas-3d');
-    let renderer = new THREE.WebGLRenderer({canvas, alpha: true});
-  
-    renderer.setClearColor (0x000000, 0);
-  
-    let fov = 45;
-    let aspect = 2;  // the canvas default
-    let near = 0.1;
-    let far = 100;
-    let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.set(0, 10, 20);
-  
-    let controls = new OrbitControls(camera, canvas);
-    controls.target.set(0, 5, 0);
-    controls.update();
-  
-    let scene = new THREE.Scene();
-    scene.background = null;
-  
-    let color = 0xf2f2ff;
-    let intensity = 1;
-    let light = new THREE.DirectionalLight(color, intensity);
-      light.position.set(5, 10, 2);
-      scene.add(light);
-    
-    let gltfLoader = new GLTFLoader();
-    gltfLoader.load('assets/' + file + '.gltf', (gltf) => {
-        let graphics = gltf.scene;
-        scene.add(graphics);
-  
-        let box = new THREE.Box3().setFromObject(graphics);
-        let boxSize = box.getSize(new THREE.Vector3()).length();
-        let boxCenter = box.getCenter(new THREE.Vector3());
-  
-        frameArea(boxSize * 0.5, boxCenter, camera);
-  
-        // update controls for new size
-        controls.maxDistance = boxSize * 10;
-        controls.target.copy(boxCenter);
-        controls.update();
-      });
-    
-  
-    function render() {
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 8;
-      controls.update();
-      renderer.render(scene, camera);
-      requestAnimationFrame(render);
+//sets image for selected day
+function generateMainImage(weather){
+    document.getElementById('canvas-2d').classList = '';
+    document.getElementById('canvas-2d').classList.add('image-2d-' + weather);
+}
+
+function animateWeather(weather){
+    // document.getElementById('drops').children.map((item, index) => 
+    //     item.id = 'drop' + index
+    // );
+
+    for(let i=0; i<document.getElementById('drops').children.length-1; i++){
+        document.getElementById('drops').children[i].id = 'drop-' + i;
     }
-    requestAnimationFrame(render);
-  }
 
-  function frameArea(sizeToFitOnScreen, boxCenter, camera) {
-      const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
-      const halfFovY = THREE.MathUtils.degToRad(camera.fov * .4);
-      const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
+    // for(let i=0; i<document.getElementById('drops').children.length; i++){
+    // }
 
-      const direction = (new THREE.Vector3())
-          .subVectors(camera.position, boxCenter)
-          .multiply(new THREE.Vector3(1, 0, 1))
-          .normalize();
-  
+    var index = 0;
 
-      camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
+    function animate(){
+        setTimeout(function(){
+            if(index == document.getElementById('drops').children.length){
+                index = 0;
+                return;
+            }
+            document.getElementById('drops').children[index].classList.add('grey-drop', 'fade-in');
+            if((index-1) >= 0){
+                document.getElementById('drops').children[index-1].classList.remove('grey-drop');
+                document.getElementById('drops').children[index-1].classList.remove('fade-in');
+        
+            }
+            index = index + 1;
+            setTimeout(function(){
+                animate();
+            }, 500);
+        }, 500);
+        
     }
+
+
+   setInterval(function(){
+    animate();
+   }, 7000);
+
+
+}
+
+
+animateWeather();
 
  //listens for form-submit
 form.addEventListener("submit", e => {
@@ -181,6 +164,11 @@ document.getElementById('back-btn').addEventListener('click', function(event){
     location.reload();
 });
 
+//listens for stats-btn click
+document.getElementById('stats-btn').addEventListener('click', function(event){
+    document.getElementById('details-container').style.display = 'none';
+    document.getElementById('stats-container').style.display = 'block';
+});
 
 
 
