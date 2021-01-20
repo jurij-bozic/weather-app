@@ -94,6 +94,7 @@ function selectDay(event){
 
     //loads main image for selected day
     generateMainImage(classesOfChild[classesOfChild.length-1].toLowerCase());
+    animateWeather(classesOfChild[classesOfChild.length-1].toLowerCase());
 
     prevTargetId = event.srcElement.id;
 }
@@ -104,49 +105,68 @@ function generateMainImage(weather){
 }
 
 function animateWeather(weather){
-    // document.getElementById('drops').children.map((item, index) => 
-    //     item.id = 'drop' + index
-    // );
+    let animatables = document.getElementById('drops').children;
+    let weatherIcons = {
+        rain: 'tint',
+        snow: 'snowflake',
+        clouds: 'cloud',
+        sun: 'sun',
+        storm: 'bolt'
+    };
 
-    for(let i=0; i<document.getElementById('drops').children.length-1; i++){
-        document.getElementById('drops').children[i].id = 'drop-' + i;
+
+
+    for(let i=0; i<animatables.length-1; i++){
+        if(Array.from(animatables[i].children[0].classList).indexOf('fas') !== -1){
+            animatables[i].children[0].classList = [];
+        }
     }
 
-    // for(let i=0; i<document.getElementById('drops').children.length; i++){
+    for(let i=0; i<animatables.length-1; i++){
+        if(!animatables[i].id ){
+            animatables[i].id = 'drop-' + i;
+        }
+        if(weather == 'cloud'){
+            animatables[i].children[0].classList.add('fas', 'fa-' + weatherIcons[weather]);
+        }
+        else if(weather == 'sun' || weather == 'storm'){
+            animatables[2].children[0].classList.add('fas', 'fa-' + weatherIcons[weather], 'sun-img', 'scale-in-center');
+        }
+        else {
+            animatables[i].children[0].classList.add('fas', 'fa-' + weatherIcons[weather]);
+        }
+        if(weather == 'snow'){
+            animatables[i].children[0].classList.add('snow-rotate');
+        }
+
+    }
+
+    // if(weather == 'rain'){
+    //     var index = 0;
+    //     function animate(){
+    //         setTimeout(function(){
+    //             if(index == document.getElementById('drops').children.length){
+    //                 index = 0;
+    //                 return;
+    //             }
+    //             document.getElementById('drops').children[index].classList.add('grey-drop', 'fade-in');
+    //             if((index-1) >= 0){
+    //                 document.getElementById('drops').children[index-1].classList.remove('grey-drop');
+    //                 document.getElementById('drops').children[index-1].classList.remove('fade-in');
+    //             }
+    //             index = index + 1;
+    //             setTimeout(function(){
+    //                 animate();
+    //             }, 500);
+    //         }, 500);  
+    //     }
+    
+    //    setInterval(function(){
+    //     animate();
+    //    }, 7000);
     // }
 
-    var index = 0;
-
-    function animate(){
-        setTimeout(function(){
-            if(index == document.getElementById('drops').children.length){
-                index = 0;
-                return;
-            }
-            document.getElementById('drops').children[index].classList.add('grey-drop', 'fade-in');
-            if((index-1) >= 0){
-                document.getElementById('drops').children[index-1].classList.remove('grey-drop');
-                document.getElementById('drops').children[index-1].classList.remove('fade-in');
-        
-            }
-            index = index + 1;
-            setTimeout(function(){
-                animate();
-            }, 500);
-        }, 500);
-        
-    }
-
-
-   setInterval(function(){
-    animate();
-   }, 7000);
-
-
 }
-
-
-animateWeather();
 
  //listens for form-submit
 form.addEventListener("submit", e => {
