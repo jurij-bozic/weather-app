@@ -1,4 +1,4 @@
-# weather-app
+# weather-app (in progress)
 Application for showing the weather forecast for a given location
 
 # Please note the following:
