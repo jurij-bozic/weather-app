@@ -1,9 +1,4 @@
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
-import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
-import {GLTFLoader} from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/loaders/GLTFLoader.js';
-
-
-const apiKey = "4d8fb5b93d4af21d66a2948710284366";
+const apiKey = "d4a765bc1fc872ff1fdb9befc7bb8555";
 const input = document.querySelector("#search-input");
 const form = document.querySelector("#search-form");
 const dayName = [
@@ -19,6 +14,13 @@ function getWeatherData(url1){
             let lat = data.coord.lat;
             let lon = data.coord.lon;
             let urlWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+            let weatherNames = {
+                Sun: 'sun',
+                Clouds: 'cloud',
+                Rain: 'cloud-rain',
+                Storm: 'bolt',
+                Snow: 'snowflake'
+            };
 
             //fetches  7-day weather forecast based on location coordinates
             fetch(urlWeather).then(response => response.json())
@@ -31,9 +33,11 @@ function getWeatherData(url1){
                     let params = [
                         ['container', 'selected', 'day-selection'],
                         ['img', 'img-container', '-container'],
-                        ['svg', "svg-dimensions icons-2d-props icons-2d-" + (dailyData.daily[i].weather[0].main == 'Clear' ? 'Sun' : dailyData.daily[i].weather[0].main), '-img'],
+                        ['svg', "svg-dimensions icons-2d-props fas fa-" + weatherNames[(dailyData.daily[i].weather[0].main == 'Clear' ? 'Sun' : dailyData.daily[i].weather[0].main)], '-img'],
                         ['degrees', 'degrees-card', '-container']
                     ];
+
+                    //sun, cloud, cloud-rain, bolt, snowflake
 
                     params.map(function(item, index){
                         generateDomEl('DIV', item[0], item[1], item[2], dailyData, i, (index==0 ? null : true), (index==0 ? true : null));
@@ -90,8 +94,6 @@ function selectDay(event){
     document.getElementById('degrees').textContent = event.srcElement.lastChild.textContent; 
     document.getElementById(event.srcElement.id).classList.add('get-selected');
 
-    // setBackground(classesOfChild[classesOfChild.length-1]);
-
     //loads main image for selected day
     generateMainImage(classesOfChild[classesOfChild.length-1].toLowerCase());
     animateWeather(classesOfChild[classesOfChild.length-1].toLowerCase());
@@ -105,16 +107,18 @@ function generateMainImage(weather){
 }
 
 function animateWeather(weather){
+
+    if(weather == "storm"){
+        console.warn('HERE IT IS!');
+    }
     let animatables = document.getElementById('drops').children;
     let weatherIcons = {
         rain: 'tint',
-        snow: 'snowflake',
-        clouds: 'cloud',
+        snowflake: 'snowflake',
+        cloud: 'cloud',
         sun: 'sun',
         storm: 'bolt'
     };
-
-
 
     for(let i=0; i<animatables.length-1; i++){
         if(Array.from(animatables[i].children[0].classList).indexOf('fas') !== -1){
@@ -126,46 +130,17 @@ function animateWeather(weather){
         if(!animatables[i].id ){
             animatables[i].id = 'drop-' + i;
         }
-        if(weather == 'cloud'){
-            animatables[i].children[0].classList.add('fas', 'fa-' + weatherIcons[weather]);
-        }
-        else if(weather == 'sun' || weather == 'storm'){
+
+        if(weather == 'sun' || weather == 'storm'){
             animatables[2].children[0].classList.add('fas', 'fa-' + weatherIcons[weather], 'sun-img', 'scale-in-center');
         }
         else {
             animatables[i].children[0].classList.add('fas', 'fa-' + weatherIcons[weather]);
+            if(weather == 'snowflake'){
+                animatables[i].children[0].classList.add('snow-rotate');
+            }
         }
-        if(weather == 'snow'){
-            animatables[i].children[0].classList.add('snow-rotate');
-        }
-
     }
-
-    // if(weather == 'rain'){
-    //     var index = 0;
-    //     function animate(){
-    //         setTimeout(function(){
-    //             if(index == document.getElementById('drops').children.length){
-    //                 index = 0;
-    //                 return;
-    //             }
-    //             document.getElementById('drops').children[index].classList.add('grey-drop', 'fade-in');
-    //             if((index-1) >= 0){
-    //                 document.getElementById('drops').children[index-1].classList.remove('grey-drop');
-    //                 document.getElementById('drops').children[index-1].classList.remove('fade-in');
-    //             }
-    //             index = index + 1;
-    //             setTimeout(function(){
-    //                 animate();
-    //             }, 500);
-    //         }, 500);  
-    //     }
-    
-    //    setInterval(function(){
-    //     animate();
-    //    }, 7000);
-    // }
-
 }
 
  //listens for form-submit
@@ -188,6 +163,12 @@ document.getElementById('back-btn').addEventListener('click', function(event){
 document.getElementById('stats-btn').addEventListener('click', function(event){
     document.getElementById('details-container').style.display = 'none';
     document.getElementById('stats-container').style.display = 'block';
+});
+
+//listens for go-back button click
+document.getElementById('go-back').addEventListener('click', function(event){
+    document.getElementById('details-container').style.display = 'block';
+    document.getElementById('stats-container').style.display = 'none';
 });
 
 

@@ -29,7 +29,7 @@
         <div id="main-home-container" class='basic'>
             <div id="home-text">
                 <h1 id="text1">Welcome to the Weather App!</h2> 
-                <h2 id="text2">Search location to check weather</h2>
+                <h2 id="text2">Search location <br> to check weather</h2>
                 
                   <form id="search-form"><input type="text" id="search-input" placeholder="Select Location"><button id="magnifying-glass" class="fas fa-search"></button></form>
                 
@@ -39,19 +39,19 @@
         <div id='details-container' class='basic fade-in'>
           <div id="selected-day">
             <div >
-              <div>
-                <h1 class="spacer" id="location-container"> 
+
+                <h1 id="location-container"> 
                   <span id="location" >Location Name</span> 
                   <div id="back-btn" class="far fa-times-circle scale-down-center"></div>
                   </h1>
-                </div>
+   
             </div>
-            <h2 id="degrees" class="spacer">DEGREES</h2>
-            <div id="picture" class="spacer"><div id="canvas-2d"></div></div>
-            <div id="day-name" class="spacer">DAY NAME</div>
+            <h2 id="degrees">DEGREES</h2>
+            <div id="picture"><div id="canvas-2d"></div></div>
+            <div id="day-name">DAY NAME</div>
           </div>
           
-          <div id="day-selection" class="spacer">
+          <div id="day-selection">
           </div>
 
           <div id="stats-btn-container">
@@ -59,7 +59,8 @@
           </div>
         </div>
         <div id="stats-container" class="fade-in">
-          <h2>Statistic data for location</h2>
+          <div id="go-back" class="fas fa-arrow-circle-left back-arrow"></div>
+          <h1 id="stats-title">Statistic data for location</h2>
           <div><em>in development...</em></div>
         </div>
     </div>
