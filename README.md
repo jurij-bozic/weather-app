@@ -1,4 +1,4 @@
-# weather-app (in progress)
+# weather-app
 (OLD project / vanilla JS) Application for showing the weather forecast for a given location.
 
 # Please note the following:
